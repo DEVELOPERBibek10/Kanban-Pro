@@ -17,31 +17,37 @@ import { SelectTrigger } from "./ui/select";
 import { SelectContent } from "./ui/select";
 import { projectType } from "@/constants";
 import { useDispatch } from "react-redux";
-import { createProject } from "@/lib/Slice/kanbanSlice";
+import { createProject, updateProject } from "@/lib/Slice/kanbanSlice";
 import { Textarea } from "./ui/textarea";
+import type { ProjectType } from "@/types";
 
 
 
 interface ProjectFormProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  status:"Create" | "Update" 
+  status: "Create" | "Update";
+  detail?: {
+    id: string;
+    type: ProjectType;
+    name: string;
+    description: string;
+  } | null;
 }
 
 
 
-const ProjectForm = ({ open, setOpen, status }: ProjectFormProps) => {
+const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
+ 
   const dispatch = useDispatch();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Project: "",
-      description: "",
-      type: "Software Development",
+      Project: detail?.name || "",
+      description: detail?.description || "",
+      type: detail?.type || "Software Development",
     },
   });
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (status === "Create") {
       dispatch(
@@ -51,6 +57,15 @@ const ProjectForm = ({ open, setOpen, status }: ProjectFormProps) => {
           type: values.type,
         })
       );
+    } else if (status === "Update") {
+      dispatch(
+        updateProject({
+          id: detail!.id,
+          name: values.Project,
+          description: values.description,
+          type:values.type
+        })
+      )
     }
     setOpen(!open);
     form.reset();
