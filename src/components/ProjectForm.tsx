@@ -1,0 +1,146 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { FolderCheck } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formSchema } from "@/lib/Zod/Schema";
+import { Select, SelectItem, SelectValue } from "./ui/select";
+import { SelectTrigger } from "./ui/select";
+import { SelectContent } from "./ui/select";
+import { projectType } from "@/constants";
+import { useDispatch } from "react-redux";
+import { createProject } from "@/lib/Slice/kanbanSlice";
+import { Textarea } from "./ui/textarea";
+
+
+
+interface ProjectFormProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  status:"Create" | "Update" 
+}
+
+
+
+const ProjectForm = ({ open, setOpen, status }: ProjectFormProps) => {
+  const dispatch = useDispatch();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      Project: "",
+      description: "",
+      type: "Software Development",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (status === "Create") {
+      dispatch(
+        createProject({
+          name: values.Project,
+          description: values.description,
+          type: values.type,
+        })
+      );
+    }
+    setOpen(!open);
+    form.reset();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="max-w-full">
+        <DialogHeader>
+          <DialogTitle>
+            <div className="flex flex-col justify-center gap-3">
+              <div className="w-10 h-10 bg-gray-300 dark:bg-white dark:text-black rounded-full flex items-center justify-center">
+                <FolderCheck />
+              </div>
+              <div className="felx flex-col gap-3">
+                <h3 className="text-xl font-semibold">New Project</h3>
+                <p className="text-gray-500 text-sm font-light">
+                  Fill in the form below to create or modify a project
+                </p>
+              </div>
+            </div>
+          </DialogTitle>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div className="flex items-center gap-4 flex-wrap">
+                <FormField
+                  control={form.control}
+                  name="Project"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Eg. Build an app..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {projectType.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea className="w-[450px]" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" className="cursor-pointer">
+                {status}
+              </Button>
+            </form>
+          </Form>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default ProjectForm;
