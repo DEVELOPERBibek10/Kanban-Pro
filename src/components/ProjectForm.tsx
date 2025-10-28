@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { createProject, updateProject } from "@/lib/Slice/kanbanSlice";
 import { Textarea } from "./ui/textarea";
 import type { ProjectType } from "@/types";
+import { useEffect } from "react";
 
 
 
@@ -27,7 +28,7 @@ interface ProjectFormProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   status: "Create" | "Update";
-  detail?: {
+  detail: {
     id: string;
     type: ProjectType;
     name: string;
@@ -38,21 +39,46 @@ interface ProjectFormProps {
 
 
 const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
- 
   const dispatch = useDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Project: detail?.name || "",
-      description: detail?.description || "",
-      type: detail?.type || "Software Development",
+      name: "",
+      description:  "",
+      type: "Software Development",
     },
   });
+
+  useEffect(() => {
+    if (!open) {
+      form.reset()
+    }
+  },[open,form])
+
+  useEffect(() => {
+    if (detail && status === "Update") {
+      form.reset({
+        name:detail.name,
+        description: detail.description,
+        type: detail.type ,
+      });
+    } else {
+      form.reset({
+        name: "",
+        description: "",
+        type: "Software Development",
+      });
+    }
+
+    return ()=> form.reset()
+
+  },[status,form,detail])
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (status === "Create") {
       dispatch(
         createProject({
-          name: values.Project,
+          name: values.name,
           description: values.description,
           type: values.type,
         })
@@ -61,14 +87,14 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
       dispatch(
         updateProject({
           id: detail!.id,
-          name: values.Project,
+          name: values.name,
           description: values.description,
           type:values.type
         })
       )
     }
-    setOpen(!open);
     form.reset();
+    setOpen(!open);
   };
 
   return (
@@ -80,7 +106,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
               <div className="w-10 h-10 bg-gray-300 dark:bg-white dark:text-black rounded-full flex items-center justify-center">
                 <FolderCheck />
               </div>
-              <div className="felx flex-col gap-3">
+              <div className="flex flex-col gap-3">
                 <h3 className="text-xl font-semibold">New Project</h3>
                 <p className="text-gray-500 text-sm font-light">
                   Fill in the form below to create or modify a project
@@ -93,7 +119,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
               <div className="flex items-center gap-4 flex-wrap">
                 <FormField
                   control={form.control}
-                  name="Project"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Name</FormLabel>

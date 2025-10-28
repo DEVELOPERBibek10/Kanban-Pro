@@ -30,7 +30,7 @@ const Header = () => {
         </div>
       </nav>
       {
-        <ProjectForm status="Create" open={open} setOpen={setOpen} />
+        <ProjectForm status="Create" open={open} setOpen={setOpen} detail={null}/>
       }
     </header>
   );

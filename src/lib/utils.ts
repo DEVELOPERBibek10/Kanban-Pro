@@ -23,9 +23,9 @@ export function returnIcons(projectType:string) {
        name: "Marketing",
        icon: "https://cdn-icons-png.flaticon.com/128/1077/1077221.png",
      };
-  } if (projectType === "Project Management") {
+  } if (projectType === "Product Management") {
     return {
-      name: "Project Management",
+      name: "Product Management",
       icon: "https://cdn-icons-png.flaticon.com/128/12474/12474335.png",
     };
   } if (projectType === "Design") {

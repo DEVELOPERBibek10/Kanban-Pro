@@ -1,11 +1,17 @@
-import type { Project, ProjectType, Task, TaskPriorityType, TaskStatusType } from "@/types";
+import type {
+  Project,
+  ProjectType,
+  Task,
+  TaskPriorityType,
+  TaskStatusType,
+} from "@/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
 const statusToColumnMap: Record<TaskStatusType, string> = {
   "To Do": "todo",
   "In Progress": "inProgress",
-  "Done": "done",
+  Done: "done",
 };
 
 export function CreateProjectReducer(
@@ -23,9 +29,8 @@ export function CreateProjectReducer(
     description: action.payload.description,
     type: action.payload.type,
     columns: {
-      todo: {  name: "To Do", tasks: [] },
+      todo: { name: "To Do", tasks: [] },
       inProgress: {
-        
         name: "In Progress",
         tasks: [],
       },
@@ -59,10 +64,7 @@ export function updateProjectReducer(
       changed = true;
     }
 
-    if (
-      action.payload.description &&
-      action.payload.description !== project.description
-    ) {
+    if (action.payload.description !== project.description) {
       project.description = action.payload.description;
       changed = true;
     }
@@ -84,7 +86,7 @@ export function deleteProjectReducer(
 }
 
 export function addTaskReducer(
-  state:Project[],
+  state: Project[],
   action: PayloadAction<{
     projectId: string;
     title: string;
@@ -93,10 +95,10 @@ export function addTaskReducer(
     priority: TaskPriorityType;
   }>
 ) {
-  const project = state.find(p => p.id === action.payload.projectId)
-  
+  const project = state.find((p) => p.id === action.payload.projectId);
+
   if (project) {
-    const createdAt = new Date().toISOString()
+    const createdAt = new Date().toISOString();
 
     const newTask: Task = {
       id: uuid(),
@@ -106,10 +108,10 @@ export function addTaskReducer(
       priority: action.payload.priority,
       status: project.columns[action.payload.columnId].name as TaskStatusType,
       createdAt: createdAt,
-      updatedAt:createdAt
-    }
+      updatedAt: createdAt,
+    };
     project.columns[action.payload.columnId].tasks.push(newTask);
-    project.updatedAt = new Date().toISOString()
+    project.updatedAt = new Date().toISOString();
   }
 }
 
@@ -125,8 +127,8 @@ export function updateTaskReducer(
     status?: TaskStatusType;
   }>
 ) {
-  const project = state.find(p => p.id === action.payload.projectId);
-  
+  const project = state.find((p) => p.id === action.payload.projectId);
+
   if (!project) return;
 
   const currentColumn = project.columns[action.payload.columnId];
@@ -136,7 +138,9 @@ export function updateTaskReducer(
     return;
   }
 
-  const taskIndex = currentColumn.tasks.findIndex(task => task.id === action.payload.id);
+  const taskIndex = currentColumn.tasks.findIndex(
+    (task) => task.id === action.payload.id
+  );
 
   const existingTask = currentColumn.tasks[taskIndex];
 
@@ -146,35 +150,41 @@ export function updateTaskReducer(
     existingTask.title = action.payload.title;
     changed = true;
   }
-   if (action.payload.description && existingTask.description !== action.payload.description) {
-     existingTask.description = action.payload.description;
-     changed = true;
-   }
-   if (action.payload.priority && existingTask.priority !== action.payload.priority) {
-     existingTask.priority = action.payload.priority;
-     changed = true;
-   }
-   if (action.payload.title && existingTask.title !== action.payload.title) {
-     existingTask.title = action.payload.title;
-     changed = true;
-   }
-   let newColumnId = action.payload.columnId;
-   if (action.payload.status && existingTask.status !== action.payload.status) {
-     const newStatus = action.payload.status;
-     newColumnId = statusToColumnMap[newStatus];
-     if (!project.columns[newColumnId]) {
-       console.log(`No colum named ${newColumnId} in the current Project`);
-       return;
-     }
+  if (
+    action.payload.description &&
+    existingTask.description !== action.payload.description
+  ) {
+    existingTask.description = action.payload.description;
+    changed = true;
+  }
+  if (
+    action.payload.priority &&
+    existingTask.priority !== action.payload.priority
+  ) {
+    existingTask.priority = action.payload.priority;
+    changed = true;
+  }
+  if (action.payload.title && existingTask.title !== action.payload.title) {
+    existingTask.title = action.payload.title;
+    changed = true;
+  }
+  let newColumnId = action.payload.columnId;
+  if (action.payload.status && existingTask.status !== action.payload.status) {
+    const newStatus = action.payload.status;
+    newColumnId = statusToColumnMap[newStatus];
+    if (!project.columns[newColumnId]) {
+      console.log(`No colum named ${newColumnId} in the current Project`);
+      return;
+    }
 
-     existingTask.status = newStatus;
-     changed = true;
-     
-     currentColumn.tasks.splice(taskIndex, 1);
+    existingTask.status = newStatus;
+    changed = true;
 
-     project.columns[newColumnId].tasks.push(existingTask); 
-   }
-  
+    currentColumn.tasks.splice(taskIndex, 1);
+
+    project.columns[newColumnId].tasks.push(existingTask);
+  }
+
   if (changed) {
     existingTask.updatedAt = new Date().toISOString();
     project.updatedAt = new Date().toISOString();
@@ -185,10 +195,10 @@ export function deleteTaskReducer(
   state: Project[],
   action: PayloadAction<{ projectId: string; columnId: string; id: string }>
 ) {
-    const project = state.find((p) => p.id === action.payload.projectId);
+  const project = state.find((p) => p.id === action.payload.projectId);
 
   if (!project) return;
-  
+
   const taskColumn = project.columns[action.payload.columnId];
 
   if (!taskColumn) {
@@ -196,7 +206,9 @@ export function deleteTaskReducer(
     return;
   }
 
-  const taskIndex = taskColumn.tasks.findIndex(task => task.id === action.payload.id);
+  const taskIndex = taskColumn.tasks.findIndex(
+    (task) => task.id === action.payload.id
+  );
 
   if (taskIndex == -1) {
     console.log("The task does not exist");
@@ -205,5 +217,4 @@ export function deleteTaskReducer(
 
   taskColumn.tasks.splice(taskIndex, 1);
   project.updatedAt = new Date().toISOString();
-
 }

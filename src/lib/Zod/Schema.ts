@@ -1,7 +1,7 @@
 import z from "zod";
 
  export const formSchema = z.object({
-  Project: z.string().min(5, {
+  name: z.string().min(5, {
     message: "Project's name must be at least 5 characters.",
   }),
   description:z.string().optional(),
