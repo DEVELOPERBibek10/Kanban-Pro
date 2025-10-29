@@ -7,18 +7,17 @@ import {
 } from "@/components/ui/dialog";
 import { Layout } from "lucide-react";
 import { Button } from "./ui/button";
-import { MdDelete } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
 import { Input } from "./ui/input";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/Store/Store";
-import { returnIcons } from "@/lib/utils";
+
 import ProjectForm from "./ProjectForm";
 import { useMemo, useState } from "react";
-import { deleteProject } from "@/lib/Slice/kanbanSlice";
+
 import type { ProjectType } from "@/types";
 import useDebounce from "@/Hooks/useDebounce";
 import { BiSolidError } from "react-icons/bi";
+import ProjectItem from "./ProjectItem";
 
 const ProjectAction = () => {
   const Projects = useSelector((state: RootState) => state.kanban);
@@ -43,23 +42,6 @@ const ProjectAction = () => {
     return Projects;
   }, [Projects, debouncedSearch]);
 
-  const dispatch = useDispatch();
-
-  const handleUpdateProject = (
-    id: string,
-    type: ProjectType,
-    name: string,
-    description: string
-  ) => {
-    setProjectUpdate(true);
-    setOpen(!open);
-    setProjectDetail({
-      id: id,
-      type: type,
-      name: name,
-      description: description,
-    });
-  };
   return (
     <>
       <Dialog>
@@ -99,60 +81,7 @@ const ProjectAction = () => {
           <ul className="flex flex-col gap-4 justify-center">
             {searchResult.length !== 0 ? (
               searchResult.map((project) => (
-                <li
-                  key={project.id}
-                  className="w-full border-2 border-foreground-muted p-1.5 rounded-lg flex items-center justify-between"
-                >
-                  <div className="w-full rounded-lg flex gap-2 items-center">
-                    <div className="bg-primary size-9 flex justify-center items-center rounded-lg">
-                      <img
-                        loading="lazy"
-                        src={returnIcons(project.type!).icon}
-                        alt={returnIcons(project.type!).name}
-                        className="size-7"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-semibold text-[15px] dark:text-gray-200 line-clamp-1">
-                        {project.name}
-                      </span>
-                      <span className="text-xs text-zinc-500">
-                        <span className="mr-0.5">
-                          {project.columns.todo.tasks.length +
-                            project.columns.inProgress.tasks.length +
-                            project.columns.done.tasks.length}
-                        </span>
-                        Tasks
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Button
-                      className="bg-green-500/20 hover:bg-green-500/30 rounded-full cursor-pointer transition-all duration-300"
-                      size={"icon"}
-                      onClick={() =>
-                        handleUpdateProject(
-                          project.id,
-                          project.type!,
-                          project.name,
-                          project.description!
-                        )
-                      }
-                    >
-                      <MdEdit className="size-5" color="green" />
-                    </Button>
-                    <Button
-                      className="bg-red-500/20 hover:bg-red-500/30 rounded-full cursor-pointer transition-all duration-300"
-                      size={"icon"}
-                      onClick={() =>
-                        dispatch(deleteProject({ id: project.id }))
-                      }
-                    >
-                      <MdDelete className="size-5" color="red" />
-                    </Button>
-                  </div>
-                </li>
+                <ProjectItem project={project} open={open} setOpen={setOpen} setProjectDetail={setProjectDetail} setProjectUpdate={setProjectUpdate} />
               ))
             ) : (
               <li className="h-28 w-full flex flex-col gap-3 items-center justify-center">

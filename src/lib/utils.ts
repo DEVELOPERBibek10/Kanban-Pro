@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import type { RootState } from "./Store/Store";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -70,3 +71,6 @@ export function returnIcons(projectType:string) {
     };
   }
 }
+
+export const selectProjectById = (id: string) => (state: RootState) =>
+  state.kanban.find((project) => project.id === id) || null;
