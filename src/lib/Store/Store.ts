@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import KanbanReducer from "../Slice/kanbanSlice"
+import ActiveProjectReducer from "../Slice/ActiveProjectSlice"
 
 export const store = configureStore({
   reducer: {
-  kanban: KanbanReducer
+    kanban: KanbanReducer,
+    active: ActiveProjectReducer
   },
 });
 

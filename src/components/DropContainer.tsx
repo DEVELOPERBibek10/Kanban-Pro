@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,9 +13,6 @@ const DropContainer = () => {
       <CardHeader>
         <CardTitle>Card Title</CardTitle>
       </CardHeader>
-      <CardContent>
-       
-      </CardContent>
     </Card>
   );
 };

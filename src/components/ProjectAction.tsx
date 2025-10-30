@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Layout } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useSelector } from "react-redux";
@@ -46,7 +46,7 @@ const ProjectAction = () => {
     <>
       <Dialog>
         <DialogTrigger>
-          <Layout
+          <Eye
             width={26}
             className="text-muted-foreground mt-1 cursor-pointer"
           />
@@ -81,20 +81,27 @@ const ProjectAction = () => {
           <ul className="flex flex-col gap-4 justify-center">
             {searchResult.length !== 0 ? (
               searchResult.map((project) => (
-                <ProjectItem project={project} open={open} setOpen={setOpen} setProjectDetail={setProjectDetail} setProjectUpdate={setProjectUpdate} />
+                <ProjectItem
+                  project={project}
+                  open={open}
+                  setOpen={setOpen}
+                  setProjectDetail={setProjectDetail}
+                  setProjectUpdate={setProjectUpdate}
+                />
               ))
             ) : (
               <li className="h-28 w-full flex flex-col gap-3 items-center justify-center">
-                  <BiSolidError size={50} color="gray" />
-                  <p className="text-muted-foreground text-center w-full text-sm">Project Not found...</p>
+                <BiSolidError size={50} color="gray" />
+                <p className="text-muted-foreground text-center w-full text-sm">
+                  Project Not found...
+                </p>
               </li>
             )}
           </ul>
-       
+
           <p className="text-[13px] text-muted-foreground">
             {Projects.length} Projects
           </p>
-      
         </DialogContent>
       </Dialog>
       {

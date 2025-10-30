@@ -12,9 +12,39 @@ import {
 const loadState = (): Project[] => {
   try {
     const serializedState = localStorage.getItem("kanban");
-    return serializedState ? JSON.parse(serializedState) : [];
+    return serializedState
+      ? JSON.parse(serializedState)
+      : [
+          {
+            id: "",
+            name: "",
+            description: "",
+            type: "Software Development",
+            columns: {
+              "To Do": { name: "To Do", tasks: [] },
+              "In Progress": { name: "In Progress", tasks: [] },
+              Done: { name: "Done", tasks: [] },
+            },
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        ];
   } catch {
-    return [];
+    return [
+      {
+        id: "",
+        name: "",
+        description: "",
+        type: "Software Development",
+        columns: {
+          "To Do": { name: "To Do", tasks: [] },
+          "In Progress": { name: "In Progress", tasks: [] },
+          Done: { name: "Done", tasks: [] },
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
   }
 };
 

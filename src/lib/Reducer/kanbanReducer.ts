@@ -75,6 +75,7 @@ export function updateProjectReducer(
   }
 }
 
+
 export function deleteProjectReducer(
   state: Project[],
   action: PayloadAction<{ id: string }>

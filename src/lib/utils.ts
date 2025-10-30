@@ -74,3 +74,16 @@ export function returnIcons(projectType:string) {
 
 export const selectProjectById = (id: string) => (state: RootState) =>
   state.kanban.find((project) => project.id === id) || null;
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid date";
+
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
