@@ -60,16 +60,16 @@ export function ProfileForm() {
             name="priority"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Type</FormLabel>
+                <FormLabel>Priority</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {taskPriority.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
+                      {taskPriority.map((priority) => (
+                        <SelectItem key={priority} value={priority}>
+                          {priority}
                         </SelectItem>
                       ))}
                     </SelectContent>
