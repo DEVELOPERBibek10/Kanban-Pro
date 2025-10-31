@@ -11,18 +11,33 @@ import { returnIcons, selectProjectById } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "./ui/input";
 import { setActiveProjectId } from "@/lib/Slice/ActiveProjectSlice";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check } from "lucide-react";
+import useDebounce from "@/Hooks/useDebounce";
 const ActiveProject = () => {
   const projects = useSelector((state: RootState) => state.kanban);
   const activeId = useSelector((state: RootState) => state.active.id);
   const project = useSelector(selectProjectById(activeId!));
   const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = useState("");
+  const debouncedSearch = useDebounce(searchValue, 600);
+
+    const searchResult = useMemo(() => {
+      if (debouncedSearch) {
+        return projects.filter(
+          (project) =>
+            project.name.toLowerCase().includes((debouncedSearch).toLowerCase())
+        );
+      }
+      return projects;
+    }, [projects, debouncedSearch]);
+  
   useEffect(() => {
     if (projects.length === 1) {
       dispatch(setActiveProjectId({ id: projects[0].id }));
     }
-  },[dispatch,projects])
+  }, [dispatch, projects])
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -52,9 +67,11 @@ const ActiveProject = () => {
         <Input
           placeholder="Search a project..."
           className="border-0 shadow-none outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+          value={searchValue}
+          onChange={(e)=>setSearchValue(e.target.value)}
         />
         <DropdownMenuSeparator />
-        {projects.map((project) => (
+        {searchResult.map((project) => (
           <DropdownMenuItem
             key={project.id}
             onClick={() => dispatch(setActiveProjectId({ id: project.id }))}

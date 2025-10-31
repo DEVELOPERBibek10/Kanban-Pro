@@ -10,8 +10,8 @@ const Home = () => {
   const project = useSelector(selectProjectById(activeId!));
 
   return (
-    <main className="w-full flex gap-4 mx-4">
-      <div className="bg-white dark:bg-zinc-800 w-[70%] rounded-xl">
+    <main className="w-full flex flex-col gap-4 mx-4 lg:flex-row">
+      <div className="bg-white dark:bg-zinc-800 w-full lg:w-[70%] rounded-xl">
         <div className="w-full flex justify-between">
           <div className="w-full flex justify-between items-center m-3">
             <div className="flex gap-2">
@@ -23,12 +23,21 @@ const Home = () => {
             </Button>
           </div>
         </div>
-        {project &&
-          Object.keys(project.columns).map((column) => (
-            <div className="capitalize">{column}</div>
-          ))}
+        <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] auto-rows-fr mx-4">
+          {project &&
+            Object.keys(project.columns).map((column) => (
+              <div className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 h-[500px] flex flex-col items-center px-3">
+                <div className="w-full bg-zinc-200 dark:bg-zinc-700 p-2 mt-2.5 rounded-md flex justify-between items-center">
+                  {project.columns[column].name}
+                  <div className="w-8 h-8 rounded-full bg-primary text-gray-200 flex items-center justify-center">
+                    {project.columns[column].tasks.length}
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
-      <div className="bg-white dark:bg-zinc-800 w-[30%] rounded-xl">
+      <div className="bg-white dark:bg-zinc-800 w-full lg:w-[30%] rounded-xl">
         <ActiveProject />
       </div>
     </main>

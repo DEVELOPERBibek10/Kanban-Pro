@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <header className="w-full h-16">
-      <nav className=" flex justify-between items-center px-20 py-3">
+      <nav className=" flex justify-between items-center px-10 py-3">
         <div className="flex justify-center items-center gap-2">
           <Logo />
           <div>
