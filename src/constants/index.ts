@@ -12,3 +12,9 @@ export const projectType = [
   "Data Science",
   "Other",
 ];
+
+export const taskPriority = [
+  "High",
+  "Medium",
+  "Low",
+];

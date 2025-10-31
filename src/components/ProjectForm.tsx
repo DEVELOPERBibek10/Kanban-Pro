@@ -11,7 +11,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "@/lib/Zod/Schema";
+import { ProjectFormSchema } from "@/lib/Zod/Schema";
 import { Select, SelectItem, SelectValue } from "./ui/select";
 import { SelectTrigger } from "./ui/select";
 import { SelectContent } from "./ui/select";
@@ -40,11 +40,11 @@ interface ProjectFormProps {
 
 const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
   const dispatch = useDispatch();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof ProjectFormSchema>>({
+    resolver: zodResolver(ProjectFormSchema),
     defaultValues: {
       name: "",
-      description:  "",
+      description: "",
       type: "Software Development",
     },
   });
@@ -74,7 +74,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
 
   },[status,form,detail])
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof ProjectFormSchema>) => {
     if (status === "Create") {
       dispatch(
         createProject({
@@ -89,9 +89,9 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
           id: detail!.id,
           name: values.name,
           description: values.description,
-          type:values.type
+          type: values.type,
         })
-      )
+      );
     }
     form.reset();
     setOpen(!open);
