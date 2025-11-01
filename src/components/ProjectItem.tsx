@@ -68,7 +68,7 @@ const ProjectItem = ({
               </span>
               {project.id === active.id && (
                 <span className="bg-gray-200 dark:bg-zinc-700 text-xs p-1 rounded-md font-semibold">
-                  Selected
+                  Active
                 </span>
               )}
             </div>
