@@ -1,7 +1,6 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -21,25 +20,25 @@ const ActiveProject = () => {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearch = useDebounce(searchValue, 600);
+  const [open,setOpen] = useState(false)
 
-    const searchResult = useMemo(() => {
-      if (debouncedSearch) {
-        return projects.filter(
-          (project) =>
-            project.name.toLowerCase().includes((debouncedSearch).toLowerCase())
-        );
-      }
-      return projects;
-    }, [projects, debouncedSearch]);
-  
+  const searchResult = useMemo(() => {
+    if (debouncedSearch) {
+      return projects.filter((project) =>
+        project.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      );
+    }
+    return projects;
+  }, [projects, debouncedSearch]);
+
   useEffect(() => {
     if (projects.length === 1) {
       dispatch(setActiveProjectId({ id: projects[0].id }));
     }
-  }, [dispatch, projects])
-  
+  }, [dispatch, projects]);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         className="w-full p-3 outline-0 cursor-pointer"
         disabled={!projects.length}
@@ -68,41 +67,48 @@ const ActiveProject = () => {
           placeholder="Search a project..."
           className="border-0 shadow-none outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           value={searchValue}
-          onChange={(e)=>setSearchValue(e.target.value)}
+          onChange={(e) => setSearchValue(e.target.value)}
         />
         <DropdownMenuSeparator />
-        {searchResult.map((project) => (
-          <DropdownMenuItem
-            key={project.id}
-            onClick={() => dispatch(setActiveProjectId({ id: project.id }))}
-            className="w-full border-0 cursor-pointer p-1.5 rounded-lg flex items-center justify-between"
-          >
-            <div className="w-full rounded-lg flex gap-2 items-center">
-              <div className="bg-primary size-9 flex justify-center items-center rounded-lg">
-                <img
-                  loading="lazy"
-                  src={returnIcons(project.type!).icon}
-                  alt={returnIcons(project.type!).name}
-                  className="size-7"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-[15px] dark:text-gray-200 line-clamp-1">
-                  {project.name}
-                </span>
-                <span className="text-xs text-zinc-500">
-                  <span className="mr-0.5">
-                    {project.columns.todo.tasks.length +
-                      project.columns.inProgress.tasks.length +
-                      project.columns.done.tasks.length}
+        <ul>
+          {searchResult.map((project) => (
+            <li
+              key={project.id}
+              onClick={() => {
+                setOpen(!open)
+                dispatch(setActiveProjectId({ id: project.id }))
+              }}
+              className="w-full border-0 cursor-pointer p-1.5 rounded-lg flex items-center justify-between"
+            >
+              <div className="w-full rounded-lg flex gap-2 items-center">
+                <div className="bg-primary size-9 flex justify-center items-center rounded-lg">
+                  <img
+                    loading="lazy"
+                    src={returnIcons(project.type!).icon}
+                    alt={returnIcons(project.type!).name}
+                    className="size-7"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold text-[15px] dark:text-gray-200 line-clamp-1">
+                    {project.name}
                   </span>
-                  Tasks
-                </span>
+                  <span className="text-xs text-zinc-500">
+                    <span className="mr-0.5">
+                      {project.columns.todo.tasks.length +
+                        project.columns.inProgress.tasks.length +
+                        project.columns.done.tasks.length}
+                    </span>
+                    Tasks
+                  </span>
+                </div>
               </div>
-            </div>
-            {activeId === project.id && <Check color="green" className="mb-1 size-5"/>}
-          </DropdownMenuItem>
-        ))}
+              {activeId === project.id && (
+                <Check color="green" className="mb-1 size-5" />
+              )}
+            </li>
+          ))}
+        </ul>
       </DropdownMenuContent>
     </DropdownMenu>
   );
