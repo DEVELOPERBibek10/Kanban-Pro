@@ -26,7 +26,11 @@ export const TaskFormSchema = z.object({
   title: z.string().min(5, {
     message: "Task title must be at least 5 characters.",
   }),
-  description: z.string().optional(),
+  description: z.string().min(5, {
+    message: "Task description must be at least 5 characters.",
+  }),
+  project: z.enum([]),
   priority: z.enum(["High", "Medium", "Low"] as TaskPriorityType[]),
 });
+
 

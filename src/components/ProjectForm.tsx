@@ -107,8 +107,10 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
                 <FolderCheck />
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-semibold">New Project</h3>
-                <p className="text-gray-500 text-sm font-light">
+                <h3 className="text-xl font-semibold leading-2 mt-2">
+                  New Project
+                </h3>
+                <p className="text-gray-500 text-sm font-light mb-4">
                   Fill in the form below to create or modify a project
                 </p>
               </div>
