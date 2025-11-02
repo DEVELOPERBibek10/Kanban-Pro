@@ -10,7 +10,8 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const activeId = useSelector((state: RootState) => state.active.id);
   const project = useSelector(selectProjectById(activeId!));
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  console.log(project)
 
   return (
     <>

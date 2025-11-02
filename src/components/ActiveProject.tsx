@@ -50,7 +50,7 @@ const ActiveProject = () => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <ProjectsDropdown showActiveStatus={ true } open={open} setOpen={setOpen} />
+        <ProjectsDropdown showActiveStatus={ true } setOpen={setOpen} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -28,8 +28,17 @@ import {
 } from "./ui/select";
 import { taskPriority } from "@/constants";
 import { Textarea } from "./ui/textarea";
-import { ChevronsDown, ChevronsRight, ChevronsUp, ClipboardCheck } from "lucide-react";
+import {
+  ChevronsDown,
+  ChevronsRight,
+  ChevronsUp,
+  ClipboardCheck,
+} from "lucide-react";
 import { useEffect } from "react";
+import ProjectSelector from "./ProjectSelector";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/lib/Store/Store";
+import { addTask } from "@/lib/Slice/kanbanSlice";
 
 interface AddTaskFormProps {
   open: boolean;
@@ -37,9 +46,12 @@ interface AddTaskFormProps {
 }
 
 function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
+  const activeId = useSelector((state: RootState) => state.active.id);
+  const dispatch = useDispatch()
   const form = useForm<z.infer<typeof TaskFormSchema>>({
     resolver: zodResolver(TaskFormSchema),
     defaultValues: {
+      projectId: activeId ? activeId : "",
       title: "",
       description: "",
       priority: "Low",
@@ -50,17 +62,18 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
     if (!open) {
       form.reset();
     }
-  }, [open, form])
-  
+  }, [open, form]);
+
   const onSubmit = (values: z.infer<typeof TaskFormSchema>) => {
-    console.log(values);
-    form.reset()
+    dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
+    setOpen(!open)
+    form.reset();
   };
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-full">
+        <DialogContent className="min-w-2xl max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               <div className="flex flex-col justify-center gap-3">
@@ -68,7 +81,9 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                   <ClipboardCheck />
                 </div>
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-xl font-semibold leading-2 mt-2">Add Task</h3>
+                  <h3 className="text-xl font-semibold leading-2 mt-2">
+                    Add Task
+                  </h3>
                   <p className="text-gray-500 text-sm font-light mb-4">
                     Fill in the form below to create or modify a task.
                   </p>
@@ -88,12 +103,35 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter Task Title" {...field} />
+                          <Input
+                            className="min-w-[300px]"
+                            placeholder="Enter Task Title"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                  <ProjectSelector
+                    name="projectId"
+                    control={form.control}
+                    label="Project"
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea className="w-[300px]" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <FormField
                     control={form.control}
                     name="priority"
@@ -105,7 +143,7 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                             value={field.value}
                             onValueChange={field.onChange}
                           >
-                            <SelectTrigger className="w-[180px]">
+                            <SelectTrigger className="w-[300px]">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -138,24 +176,13 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="w-[450px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
                 </div>
                 <div className="w-full flex items-center justify-end gap-3">
+                  <Button onClick={()=>setOpen(false)} variant={'secondary'} className="cursor-pointer" type="button">
+                   Cancel
+                  </Button>
                   <Button className="cursor-pointer" type="submit">
-                   Add Task
+                    Add Task
                   </Button>
                 </div>
               </form>
