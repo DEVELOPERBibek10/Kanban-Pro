@@ -9,18 +9,25 @@ import useDebounce from "@/Hooks/useDebounce";
 import type { RootState } from "@/lib/Store/Store";
 
 interface ProjectsDropdownProps {
+  field?: {
+    value: string;
+    onChange: (value: string) => void;
+    onBlur: () => void;
+    name: string;
+  };
+  fieldState?: { error?: { message: string } };
   showActiveStatus: boolean;
-  open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProjectsDropdown = ({
   showActiveStatus,
-  open,
   setOpen,
+  field
 }: ProjectsDropdownProps) => {
   const projects = useSelector((state: RootState) => state.kanban);
   const activeId = useSelector((state: RootState) => state.active.id);
+  const selectedId = field && field.value ? field?.value : null;
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearch = useDebounce(searchValue, 600);
@@ -47,11 +54,15 @@ const ProjectsDropdown = ({
           <li
             key={project.id}
             onClick={() => {
+              if (field) {
+                field.onChange(project.id)
+                field.onBlur()
+              }
               if (showActiveStatus) {
                 dispatch(setActiveProjectId({ id: project.id }));
               }
-              if (open && setOpen) {
-                setOpen(!open);
+              if ( setOpen) {
+                setOpen(false);
               }
             }}
             className="w-full border-0 cursor-pointer p-1.5 rounded-lg flex items-center justify-between"
@@ -81,6 +92,9 @@ const ProjectsDropdown = ({
             </div>
             {showActiveStatus && activeId === project.id && (
               <Check color="green" className="mb-1 size-5" />
+            )}
+            {selectedId && selectedId === project.id && (
+              <Check color="gray" className="size-4"/>
             )}
           </li>
         ))}
