@@ -11,8 +11,7 @@ const Home = () => {
   const activeId = useSelector((state: RootState) => state.active.id);
   const project = useSelector(selectProjectById(activeId!));
   const [open, setOpen] = useState(false)
-  console.log(project)
-
+  
   return (
     <>
       <main className="w-full flex flex-col gap-4 mx-4 lg:flex-row">
