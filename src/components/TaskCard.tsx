@@ -1,9 +1,77 @@
+import type { Task, TaskStatusType } from "@/types";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card"
+import { cn } from "@/lib/utils";
+import { ChevronsDown, ChevronsRight, ChevronsUp } from "lucide-react";
+import { CiMenuKebab } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/Store/Store";
 
+interface TaskCardProps {
+  task: Task;
+  
+}
 
-const TaskCard = () => {
+const TaskCard = ({ task }: TaskCardProps) => {
+  const activeProjectId = useSelector((state:RootState)=>state.active.id)
+  const draggedItem: Omit<Task, "createdAt" | "updatedAt"> = {
+    projectId: activeProjectId!,
+    title: task.title,
+    id: task.id,
+    description: task.description,
+    priority: task.priority as TaskPriority,
+    status: task.status as TaskStatusType,
+  };
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData("Task", JSON.stringify(draggedItem));
+
+  };
   return (
-    <div>TaskCard</div>
-  )
+    <Card draggable onDragStart={(e)=> handleDragStart(e)} className="w-[95%] my-3 mx-3 flex flex-col gap-3 dark:bg-zinc-800">
+      <CardHeader className="w-full">
+        <div
+          className={cn(
+            `w-fit py-[3px] rounded-3xl px-2 pr-4 font-medium
+           flex items-center justify-between gap-1 text-sm`,
+            task.priority === "Low" && "bg-green-500/15 text-green-900",
+            task.priority === "Medium" && "bg-yellow-500/15 text-yellow-800",
+            task.priority === "High" && "bg-red-500/15 text-red-800"
+          )}
+        >
+          {task.priority === "Low" && <ChevronsDown width={12} color="green" />}
+          {task.priority === "High" && <ChevronsUp width={12} color="red" />}
+          {task.priority === "Medium" && (
+            <ChevronsRight width={12} color={"yellow"} />
+          )}
+          <span
+            className={cn(
+              "text-[12px]",
+              task.priority === "Low" && "text-green-500",
+              task.priority === "Medium" && "text-yellow-500",
+              task.priority === "High" && "text-red-500"
+            )}
+          >
+            {task.priority}
+          </span>
+        </div>
+        <CardAction className="cursor-pointer flex">
+          <CiMenuKebab />
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <span className="font-bold text-lg dark:text-gray-200">{task.title}</span>
+      </CardContent>
+      <CardFooter>
+        <span className="text-sm text-gray-600 line-clamp-1 tracking-tight dark:text-gray-500">{ task.description }</span>
+      </CardFooter>
+    </Card>
+  );
 }
 
 export default TaskCard;

@@ -19,8 +19,8 @@ export type Task = {
   projectId: string;
   title: string;
   description?: string;
-  priority: TaskPriorityType;
-  status: TaskStatusType;
+  priority: TaskPriorityType | string;
+  status: TaskStatusType | string;
   createdAt: string;
   updatedAt?: string;
 };
@@ -49,3 +49,14 @@ export type ProjectType =
   | "Legal"
   | "Data Science"
   | "Other";
+
+  export type DraggedItem = {
+    projectId: string;
+    id: string;
+    description?: string;
+    title: string;
+    status: TaskStatusType | string;
+    priority: TaskPriorityType | string;
+    columnId: string;
+  };
+

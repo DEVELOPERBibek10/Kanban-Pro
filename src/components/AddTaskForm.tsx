@@ -151,18 +151,18 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                                 <SelectItem key={priority} value={priority}>
                                   <div className="w-full flex items-center gap-3">
                                     {priority === "High" && (
-                                      <div className="bg-red-500/40 rounded-md p-1">
+                                      <div className="bg-red-500/15 rounded-md p-1">
                                         <ChevronsUp color="red" />
                                       </div>
                                     )}
                                     {priority === "Low" && (
-                                      <div className="bg-green-500/40 p-1 rounded-md">
+                                      <div className="bg-green-500/15 p-1 rounded-md">
                                         <ChevronsDown color="green" />
                                       </div>
                                     )}
                                     {priority == "Medium" && (
-                                      <div className="bg-orange-500/40 p-1 rounded-md">
-                                        <ChevronsRight color={"orange"} />
+                                      <div className="bg-yellow-500/15 p-1 rounded-md">
+                                        <ChevronsRight color={"yellow"} />
                                       </div>
                                     )}
                                   </div>

@@ -50,8 +50,8 @@ const ProjectSelector = ({ name, control, label }: ProjectSelectorProps) => {
                       <div className=" bg-primary p-1 rounded-md">
                         <img
                           loading="lazy"
-                          src={returnIcons(selectedProject!.type!).icon}
-                          alt={returnIcons(selectedProject!.type!).name}
+                          src={returnIcons(selectedProject ? selectedProject!.type! : "").icon}
+                          alt={returnIcons(selectedProject ? selectedProject!.type! : "") .name}
                           className="size-[18px]"
                         />
                       </div>

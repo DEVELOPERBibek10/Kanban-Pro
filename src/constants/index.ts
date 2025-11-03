@@ -1,3 +1,5 @@
+import type { TaskStatusType } from "@/types";
+
 export const projectType = [
   "IT Support",
   "Marketing",
@@ -18,3 +20,15 @@ export const taskPriority = [
   "Medium",
   "Low",
 ];
+
+  export const columnToStatusMap: Record<string, TaskStatusType> = {
+    todo: "To Do",
+    inProgress: "In Progress",
+    done: "Done",
+  };
+
+  export const statusToColumnMap: Record<TaskStatusType, string> = {
+    "To Do": "todo",
+    "In Progress": "inProgress",
+    Done: "done",
+  };

@@ -1,3 +1,4 @@
+import { statusToColumnMap } from "@/constants";
 import type {
   Project,
   ProjectType,
@@ -8,11 +9,7 @@ import type {
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
-const statusToColumnMap: Record<TaskStatusType, string> = {
-  "To Do": "todo",
-  "In Progress": "inProgress",
-  Done: "done",
-};
+
 
 export function CreateProjectReducer(
   state: Project[],
