@@ -1,5 +1,4 @@
 import ActiveProject from "@/components/ActiveProject";
-import AddTaskForm from "@/components/AddTaskForm";
 import DropContainer from "@/components/DropContainer";
 import ProjectAction from "@/components/ProjectAction";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import type { RootState } from "@/lib/Store/Store";
 import { selectProjectById } from "@/lib/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import TaskForm from "@/components/TaskForm";
 
 const Home = () => {
   const activeId = useSelector((state: RootState) => state.active.id);
@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <>
       <main className="w-full flex flex-col gap-4 mx-4 lg:flex-row">
-        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[75%] rounded-xl">
+        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[75%] min-h-[500px] rounded-xl">
           <div className="w-full flex justify-between">
             <div className="w-full flex justify-between items-center m-3">
               <div className="flex gap-2">
@@ -28,19 +28,19 @@ const Home = () => {
               </Button>
             </div>
           </div>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] auto-rows-fr mx-4">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] auto-rows-fr min-h-[500px] p-5 mx-4">
             {project &&
               Object.keys(project.columns).map((column) => (
                 <DropContainer key={column} columnId={column} />
               ))}
           </div>
         </div>
-        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] rounded-xl">
+        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] h-[610px] rounded-xl">
           <ActiveProject />
         </div>
       </main>
       {
-        <AddTaskForm open={open } setOpen={setOpen}/>
+        <TaskForm open={open } setOpen={setOpen} state="Create"/>
       }
     </>
   );

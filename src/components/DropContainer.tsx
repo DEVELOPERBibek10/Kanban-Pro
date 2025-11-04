@@ -50,9 +50,13 @@ const activeId = useSelector((state: RootState) => state.active.id);
         </div>
       </div>
       {project?.columns[columnId].tasks.length !== 0 ? (
-        project?.columns[columnId].tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))
+        <div className="flex flex-col justify-center items-center w-full pt-4 pb-8 gap-4">
+          {
+          project?.columns[columnId].tasks.map((task) => (
+              <TaskCard key={task.id} task={task} />
+          ))
+          }
+        </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-3 h-1/2">
           <div className="w-10 h-10 flex items-center justify-center rounded-full dark:bg-zinc-400 bg-zinc-300">

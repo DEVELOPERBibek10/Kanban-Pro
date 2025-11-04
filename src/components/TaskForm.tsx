@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { taskPriority } from "@/constants";
+import { statusToColumnMap, taskPriority } from "@/constants";
 import { Textarea } from "./ui/textarea";
 import {
   ChevronsDown,
@@ -38,14 +38,17 @@ import { useEffect } from "react";
 import ProjectSelector from "./ProjectSelector";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/lib/Store/Store";
-import { addTask } from "@/lib/Slice/kanbanSlice";
+import { addTask, deleteTask, updateTask } from "@/lib/Slice/kanbanSlice";
+import type { Task, TaskPriorityType, TaskStatusType } from "@/types";
 
-interface AddTaskFormProps {
+interface TaskFormProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  state: "Create" | "Update"
+  task?:Task
 }
 
-function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
+function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
   const activeId = useSelector((state: RootState) => state.active.id);
   const dispatch = useDispatch()
   const form = useForm<z.infer<typeof TaskFormSchema>>({
@@ -64,9 +67,60 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
     }
   }, [open, form]);
 
+  useEffect(() => {
+    if (task && state === "Update") {
+      form.reset({
+        projectId: activeId ? activeId : "",
+        title: task.title,
+        description: task.description,
+        priority : task.priority as TaskPriorityType
+      });
+    } else {
+      form.reset({
+        projectId: activeId ? activeId : "",
+        title: "",
+        description: "",
+        priority: "Low",
+      });
+    }
+  },[form,task,state,activeId])
+
   const onSubmit = (values: z.infer<typeof TaskFormSchema>) => {
-    dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
-    setOpen(!open)
+    if (!task && state === "Create") {
+      dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
+    }
+    else if (task && state === "Update" && values.projectId !== activeId) {
+      dispatch(
+        addTask({
+          id:task.id,
+          projectId: values.projectId,
+          title: values.title,
+          priority: values.priority,
+          description: values.description,
+          columnId:statusToColumnMap[task.status as TaskStatusType] ,
+        })
+      );
+      dispatch(
+        deleteTask({
+          projectId: activeId!,
+          columnId: statusToColumnMap[task.status as TaskStatusType],
+          id:task.id
+        })
+      );
+    } else if (task && state === "Update" && values.projectId === activeId) {
+      dispatch(
+        updateTask({
+          id: task.id,
+          projectId: values.projectId,
+          title: values.title,
+          description: values.description,
+          status: task.status as TaskStatusType,
+          columnId: statusToColumnMap[task.status as TaskStatusType],
+          priority:values.priority
+        })
+      );
+    }
+    setOpen(!open);
     form.reset();
   };
 
@@ -82,10 +136,13 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                 </div>
                 <div className="flex flex-col gap-3">
                   <h3 className="text-xl font-semibold leading-2 mt-2">
-                    Add Task
+                    {state === "Create" ? "Add Task" : "Update Task"}
                   </h3>
                   <p className="text-gray-500 text-sm font-light mb-4">
-                    Fill in the form below to create or modify a task.
+                    {state === "Create"
+                      ? "Fill in the form below to create a task."
+                      : "Fill in the form below to modify a task."
+                    }
                   </p>
                 </div>
               </div>
@@ -162,7 +219,7 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                                     )}
                                     {priority == "Medium" && (
                                       <div className="bg-yellow-500/15 p-1 rounded-md">
-                                        <ChevronsRight color={"yellow"} />
+                                        <ChevronsRight className="text-yellow-500" />
                                       </div>
                                     )}
                                   </div>
@@ -178,11 +235,16 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
                   />
                 </div>
                 <div className="w-full flex items-center justify-end gap-3">
-                  <Button onClick={()=>setOpen(false)} variant={'secondary'} className="cursor-pointer" type="button">
-                   Cancel
+                  <Button
+                    onClick={() => setOpen(false)}
+                    variant={"secondary"}
+                    className="cursor-pointer"
+                    type="button"
+                  >
+                    Cancel
                   </Button>
                   <Button className="cursor-pointer" type="submit">
-                    Add Task
+                    {state === "Create" ? "Add" : "Update"}
                   </Button>
                 </div>
               </form>
@@ -194,4 +256,4 @@ function AddTaskForm({ open, setOpen }: AddTaskFormProps) {
   );
 }
 
-export default AddTaskForm;
+export default TaskForm;

@@ -86,6 +86,7 @@ export function deleteProjectReducer(
 export function addTaskReducer(
   state: Project[],
   action: PayloadAction<{
+    id?:string,
     projectId: string;
     title: string;
     description?: string;
@@ -99,7 +100,7 @@ export function addTaskReducer(
     const createdAt = new Date().toISOString();
 
     const newTask: Task = {
-      id: uuid(),
+      id: !action.payload.id ? uuid() : action.payload.id,
       projectId: action.payload.projectId,
       title: action.payload.title,
       description: action.payload.description,

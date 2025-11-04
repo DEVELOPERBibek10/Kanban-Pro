@@ -30,7 +30,7 @@ const DeleteProjectAlert = ({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            project.
+            project and all the tasks within it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

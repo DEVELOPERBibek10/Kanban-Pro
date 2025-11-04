@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils";
 import { ChevronsDown, ChevronsRight, ChevronsUp } from "lucide-react";
-import { CiMenuKebab } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/Store/Store";
+import TaskAction from "./TaskAction";
 
 interface TaskCardProps {
   task: Task;
@@ -27,13 +27,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
     priority: task.priority as TaskPriority,
     status: task.status as TaskStatusType,
   };
-
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData("Task", JSON.stringify(draggedItem));
 
   };
   return (
-    <Card draggable onDragStart={(e)=> handleDragStart(e)} className="w-[95%] my-3 mx-3 flex flex-col gap-3 dark:bg-zinc-800">
+    <Card draggable onDragStart={(e)=> handleDragStart(e)} className="w-[95%] flex flex-col gap-3 dark:bg-zinc-800">
       <CardHeader className="w-full">
         <div
           className={cn(
@@ -47,7 +46,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           {task.priority === "Low" && <ChevronsDown width={12} color="green" />}
           {task.priority === "High" && <ChevronsUp width={12} color="red" />}
           {task.priority === "Medium" && (
-            <ChevronsRight width={12} color={"yellow"} />
+            <ChevronsRight width={12} className="text-yellow-500" />
           )}
           <span
             className={cn(
@@ -61,7 +60,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           </span>
         </div>
         <CardAction className="cursor-pointer flex">
-          <CiMenuKebab />
+          <TaskAction task={task} />
         </CardAction>
       </CardHeader>
       <CardContent>
