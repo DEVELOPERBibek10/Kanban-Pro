@@ -32,7 +32,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
   };
   return (
-    <Card draggable onDragStart={(e)=> handleDragStart(e)} className="w-[95%] flex flex-col gap-3 dark:bg-zinc-800">
+    <Card data-task-id={task.id} draggable onDragStart={(e)=> handleDragStart(e)} className="w-[95%] flex flex-col gap-3 dark:bg-zinc-800">
       <CardHeader className="w-full">
         <div
           className={cn(

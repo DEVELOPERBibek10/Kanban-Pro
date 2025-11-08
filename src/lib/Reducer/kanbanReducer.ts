@@ -124,6 +124,7 @@ export function updateTaskReducer(
     description?: string;
     priority?: TaskPriorityType;
     status?: TaskStatusType;
+    targetIndex?: number;
   }>
 ) {
   const project = state.find((p) => p.id === action.payload.projectId);
@@ -168,9 +169,11 @@ export function updateTaskReducer(
     changed = true;
   }
   let newColumnId = action.payload.columnId;
-  if (action.payload.status && existingTask.status !== action.payload.status) {
+  if (
+    (action.payload.status && action.payload.targetIndex !== null)
+  ) {
     const newStatus = action.payload.status;
-    newColumnId = statusToColumnMap[newStatus];
+    newColumnId = statusToColumnMap[newStatus!];
     if (!project.columns[newColumnId]) {
       console.log(`No colum named ${newColumnId} in the current Project`);
       return;
@@ -181,7 +184,11 @@ export function updateTaskReducer(
 
     currentColumn.tasks.splice(taskIndex, 1);
 
-    project.columns[newColumnId].tasks.push(existingTask);
+    project.columns[newColumnId].tasks.splice(
+      action.payload.targetIndex!,
+      0,
+      existingTask
+    );
   }
 
   if (changed) {

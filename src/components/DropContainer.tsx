@@ -13,23 +13,49 @@ const activeId = useSelector((state: RootState) => state.active.id);
   const project = useSelector(selectProjectById(activeId!));
   const dispatch = useDispatch();
   const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
-       try {
-         const droppedData = JSON.parse(
-           e.dataTransfer.getData("Task")
-         );
+    // 1. Get the container where the task is dropped.
+    const dropContainer = e.currentTarget;
+    //2. Get all the tasks that are in the dropContainer.
+    const taskCards = Array.from(dropContainer.querySelectorAll("[data-task-id]"));
+    try {
+      // 3. Get the draggedTask.
+      const draggedTask = JSON.parse(e.dataTransfer.getData("Task"));
+      // 4.Default targetIndex to the end of the list
+      let targetIndex = taskCards.length;
 
-         dispatch(
-           updateTask({
-             projectId: activeId!,
-             columnId: statusToColumnMap[droppedData.status as TaskStatusType],
-             title: droppedData.title,
-             description: droppedData.description,
-             priority: droppedData.priority as TaskPriorityType,
-             status: columnToStatusMap[columnId],
-             id: droppedData.id,
-           })
-         );
-       } catch (error) {
+      for (let i = 0; i < taskCards.length; i++) {
+        const card = taskCards[i] as HTMLElement;
+
+        // 5. Don't compare the dragged card against itself.
+        if (card.dataset.id === draggedTask.id) {
+          continue;
+        }
+
+        // 6. Get the card's position and midpoint
+        const rect = card.getBoundingClientRect();
+        const cardMidY = rect.top + rect.height / 2;
+
+        // 7. Is the mouse *above* or *equal to* this card's middle?
+        if (e.clientY < cardMidY || e.clientY === cardMidY) {
+          // 8. YES. This is our insertion point.
+          targetIndex = i;
+          break; // Found it, no need to check the rest
+        }
+      }
+
+      dispatch(
+        updateTask({
+          projectId: activeId!,
+          columnId: statusToColumnMap[draggedTask.status as TaskStatusType],
+          title: draggedTask.title,
+          description: draggedTask.description,
+          priority: draggedTask.priority as TaskPriorityType,
+          status: columnToStatusMap[columnId],
+          id: draggedTask.id,
+          targetIndex: targetIndex,
+        })
+      );
+    } catch (error) {
          console.error("Error processing drop:", error);
        }
   };
