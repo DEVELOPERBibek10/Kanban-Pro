@@ -7,6 +7,7 @@ import { selectProjectById } from "@/lib/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import TaskForm from "@/components/TaskForm";
+import { BiSolidError } from "react-icons/bi";
 
 const Home = () => {
   const activeId = useSelector((state: RootState) => state.active.id);
@@ -23,25 +24,33 @@ const Home = () => {
                 <h2 className="text-2xl font-bold">Projects</h2>
                 <ProjectAction />
               </div>
-              <Button disabled={!project} onClick={()=>setOpen(!open)} className="bg-secondary dark:bg-zinc-600 hover:bg-secondary text-zinc-700 dark:text-gray-200 rounded-full cursor-pointer">
+              <Button
+                disabled={!project}
+                onClick={() => setOpen(!open)}
+                className="bg-secondary dark:bg-zinc-600 hover:bg-secondary text-zinc-700 dark:text-gray-200 rounded-full cursor-pointer"
+              >
                 Add New Task
               </Button>
             </div>
           </div>
           <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] auto-rows-fr min-h-[500px] p-5 mx-4">
-            {project &&
+            {project ? (
               Object.keys(project.columns).map((column) => (
                 <DropContainer key={column} columnId={column} />
-              ))}
+              ))
+            ) : (
+              <div className="h-full w-full flex flex-col justify-center items-center">
+                <BiSolidError size={55} color="gray" />
+                <span className="text-zinc-700 dark:text-gray-200 text-lg">No projects to show!!</span>
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] h-[610px] rounded-xl">
           <ActiveProject />
         </div>
       </main>
-      {
-        <TaskForm open={open } setOpen={setOpen} state="Create"/>
-      }
+      {<TaskForm open={open} setOpen={setOpen} state="Create" />}
     </>
   );
 };
