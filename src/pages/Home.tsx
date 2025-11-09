@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       <main className="w-full flex flex-col gap-4 mx-4 lg:flex-row">
-        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[75%] min-h-[500px] rounded-xl">
+        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[75%] min-h-[600px] pb-0 rounded-xl">
           <div className="w-full flex justify-between">
             <div className="w-full flex justify-between items-center m-3">
               <div className="flex gap-2">
@@ -33,7 +33,7 @@ const Home = () => {
               </Button>
             </div>
           </div>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] auto-rows-fr min-h-[500px] p-5 mx-4">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]  auto-rows-fr min-h-[500px] p-5 mx-4">
             {project ? (
               Object.keys(project.columns).map((column) => (
                 <DropContainer key={column} columnId={column} />
@@ -46,7 +46,7 @@ const Home = () => {
             )}
           </div>
         </div>
-        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] h-[680px] rounded-xl">
+        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] max-h-[680px] rounded-xl">
           <ActiveProject />
         </div>
       </main>

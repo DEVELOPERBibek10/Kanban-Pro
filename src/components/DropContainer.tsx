@@ -67,7 +67,7 @@ const activeId = useSelector((state: RootState) => state.active.id);
           handleOnDrop(e);
         }
       }}
-      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 min-h-[500px] flex flex-col items-center px-3"
+      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 min-h-[550px] flex flex-col items-center px-3"
     >
       <div className="w-full bg-zinc-200 dark:bg-zinc-700 p-2 mt-2.5 rounded-md flex justify-between items-center">
         {project!.columns[columnId].name}
@@ -76,7 +76,7 @@ const activeId = useSelector((state: RootState) => state.active.id);
         </div>
       </div>
       {project?.columns[columnId].tasks.length !== 0 ? (
-        <div className="flex flex-col justify-center items-center w-full pt-4 pb-8 gap-4">
+        <div className="flex flex-col justify-center items-center w-full pt-4 gap-4">
           {
           project?.columns[columnId].tasks.map((task) => (
               <TaskCard key={task.id} task={task} />
