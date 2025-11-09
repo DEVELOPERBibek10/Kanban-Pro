@@ -21,9 +21,9 @@ const loadState = (): Project[] => {
             description: "",
             type: "Software Development",
             columns: {
-              "To Do": { name: "To Do", tasks: [] },
-              "In Progress": { name: "In Progress", tasks: [] },
-              Done: { name: "Done", tasks: [] },
+              todo: { name: "To Do", tasks: [] },
+              inProgress: { name: "In Progress", tasks: [] },
+              done: { name: "Done", tasks: [] },
             },
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
