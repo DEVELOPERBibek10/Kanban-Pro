@@ -123,7 +123,7 @@ const ActiveProject = () => {
           <span className="font-bold text-xl">Tasks</span>
           <div className="grid grid-cols-2 gap-3 mt-3">
             {states.map((state) => (
-              <div className="p-3 bg-gray-100 dark:bg-zinc-900 rounded-xl">
+              <div key={state} className="p-3 bg-gray-100 dark:bg-zinc-900 rounded-xl">
                 <span className="text-gray-600 dark:text-gray-300 text-[12px]">{ state.toUpperCase() }</span>
                 <div className="flex gap-2 mt-1 items-center">
                   <div
@@ -133,7 +133,7 @@ const ActiveProject = () => {
                     className="w-1 h-4 bg-primary"
                   />
                  
-                  <span className="font-bold text-lg dark:text-gray-200">{ OverallTasksStates(state) }</span>
+                  <span className="font-bold text-lg dark:text-gray-200">{ OverallTasksStates(state) ? OverallTasksStates(state) : 0 }</span>
                 </div>
               </div>
             ))}

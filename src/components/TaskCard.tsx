@@ -1,4 +1,4 @@
-import type { Task, TaskStatusType } from "@/types";
+import type { Task, TaskPriorityType, TaskStatusType } from "@/types";
 import {
   Card,
   CardAction,
@@ -24,7 +24,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
     title: task.title,
     id: task.id,
     description: task.description,
-    priority: task.priority as TaskPriority,
+    priority: task.priority as TaskPriorityType,
     status: task.status as TaskStatusType,
   };
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
