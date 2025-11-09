@@ -46,7 +46,7 @@ const Home = () => {
             )}
           </div>
         </div>
-        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] h-[610px] rounded-xl">
+        <div className="bg-white dark:bg-zinc-800 w-full lg:w-[25%] h-[680px] rounded-xl">
           <ActiveProject />
         </div>
       </main>
