@@ -23,7 +23,7 @@ const Home = () => {
                 <h2 className="text-2xl font-bold">Projects</h2>
                 <ProjectAction />
               </div>
-              <Button onClick={()=>setOpen(!open)} className="bg-secondary dark:bg-zinc-600 hover:bg-secondary text-zinc-700 dark:text-gray-200 rounded-full cursor-pointer">
+              <Button disabled={!project} onClick={()=>setOpen(!open)} className="bg-secondary dark:bg-zinc-600 hover:bg-secondary text-zinc-700 dark:text-gray-200 rounded-full cursor-pointer">
                 Add New Task
               </Button>
             </div>

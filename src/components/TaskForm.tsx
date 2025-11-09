@@ -40,6 +40,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/lib/Store/Store";
 import { addTask, deleteTask, updateTask } from "@/lib/Slice/kanbanSlice";
 import type { Task, TaskPriorityType, TaskStatusType } from "@/types";
+import { selectProjectById } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface TaskFormProps {
   open: boolean;
@@ -50,7 +52,8 @@ interface TaskFormProps {
 
 function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
   const activeId = useSelector((state: RootState) => state.active.id);
-  const dispatch = useDispatch()
+  const project = useSelector(selectProjectById(activeId!));
+  const dispatch = useDispatch();
   const form = useForm<z.infer<typeof TaskFormSchema>>({
     resolver: zodResolver(TaskFormSchema),
     defaultValues: {
@@ -86,42 +89,58 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
   },[form,task,state,activeId])
 
   const onSubmit = (values: z.infer<typeof TaskFormSchema>) => {
-    if (!task && state === "Create") {
-      dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
+    if (project) {
+      const columns = ["todo", "inProgress", "done"];
+      const isDuplicate = columns.some((col) =>
+        project.columns[col].tasks.some((t) =>
+          state === "Update" && t.id === task?.id
+            ? false
+            : t.title.toLowerCase().trim() === values.title.toLowerCase().trim()
+        )
+      );
+      if (isDuplicate) {
+        return toast.error("Task already exists!!");
+      } else {
+        if (!task && state === "Create") {
+          dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
+        }
+        else if (task && state === "Update" && values.projectId !== activeId) {
+          dispatch(
+            addTask({
+              id:task.id,
+              projectId: values.projectId,
+              title: values.title,
+              priority: values.priority,
+              description: values.description,
+              columnId:statusToColumnMap[task.status as TaskStatusType] ,
+            })
+          );
+          dispatch(
+            deleteTask({
+              projectId: activeId!,
+              columnId: statusToColumnMap[task.status as TaskStatusType],
+              id:task.id
+            })
+          );
+        } else if (task && state === "Update" && values.projectId === activeId) {
+          dispatch(
+            updateTask({
+              id: task.id,
+              projectId: values.projectId,
+              title: values.title,
+              description: values.description,
+              status: task.status as TaskStatusType,
+              columnId: statusToColumnMap[task.status as TaskStatusType],
+              priority:values.priority
+            })
+          );
+        }
+      }
+      setOpen(!open);
+      form.reset();
+    } else {
+     return toast.error("Create a project before adding a task!!")
     }
-    else if (task && state === "Update" && values.projectId !== activeId) {
-      dispatch(
-        addTask({
-          id:task.id,
-          projectId: values.projectId,
-          title: values.title,
-          priority: values.priority,
-          description: values.description,
-          columnId:statusToColumnMap[task.status as TaskStatusType] ,
-        })
-      );
-      dispatch(
-        deleteTask({
-          projectId: activeId!,
-          columnId: statusToColumnMap[task.status as TaskStatusType],
-          id:task.id
-        })
-      );
-    } else if (task && state === "Update" && values.projectId === activeId) {
-      dispatch(
-        updateTask({
-          id: task.id,
-          projectId: values.projectId,
-          title: values.title,
-          description: values.description,
-          status: task.status as TaskStatusType,
-          columnId: statusToColumnMap[task.status as TaskStatusType],
-          priority:values.priority
-        })
-      );
-    }
-    setOpen(!open);
-    form.reset();
   };
 
   return (

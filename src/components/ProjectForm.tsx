@@ -16,11 +16,13 @@ import { Select, SelectItem, SelectValue } from "./ui/select";
 import { SelectTrigger } from "./ui/select";
 import { SelectContent } from "./ui/select";
 import { projectType } from "@/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createProject, updateProject } from "@/lib/Slice/kanbanSlice";
 import { Textarea } from "./ui/textarea";
 import type { ProjectType } from "@/types";
 import { useEffect } from "react";
+import type { RootState } from "@/lib/Store/Store";
+import { toast } from "sonner";
 
 
 
@@ -40,6 +42,7 @@ interface ProjectFormProps {
 
 const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
   const dispatch = useDispatch();
+  const projects = useSelector((state: RootState) => state.kanban);
   const form = useForm<z.infer<typeof ProjectFormSchema>>({
     resolver: zodResolver(ProjectFormSchema),
     defaultValues: {
@@ -75,26 +78,31 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
   },[status,form,detail])
 
   const onSubmit = (values: z.infer<typeof ProjectFormSchema>) => {
-    if (status === "Create") {
-      dispatch(
-        createProject({
-          name: values.name,
-          description: values.description,
-          type: values.type,
-        })
-      );
-    } else if (status === "Update") {
-      dispatch(
-        updateProject({
-          id: detail!.id,
-          name: values.name,
-          description: values.description,
-          type: values.type,
-        })
-      );
+    const isDuplicate = projects.some(project => (project.id === detail?.id && status === "Update") ? false : project.name.toLowerCase().trim() === values.name.toLowerCase().trim())
+    if (!isDuplicate) {
+      if (status === "Create") {
+        dispatch(
+          createProject({
+            name: values.name,
+            description: values.description,
+            type: values.type,
+          })
+        );
+      } else if (status === "Update") {
+        dispatch(
+          updateProject({
+            id: detail!.id,
+            name: values.name,
+            description: values.description,
+            type: values.type,
+          })
+        );
+      }
+      form.reset();
+      setOpen(!open);
+    } else {
+      return toast.error("Project already exists!!")
     }
-    form.reset();
-    setOpen(!open);
   };
 
   return (

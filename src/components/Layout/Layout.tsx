@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/Context/ThemeProvider";
 import Header from "./Header";
 import Home from "@/pages/Home";
+import { Toaster } from "../ui/sonner";
 
 const Layout = () => {
   return (
@@ -10,6 +11,7 @@ const Layout = () => {
         <div className="min-h-[70vh] w-full flex mt-12">
           <Home />
         </div>
+        <Toaster closeButton={false} />
       </div>
     </ThemeProvider>
   );
