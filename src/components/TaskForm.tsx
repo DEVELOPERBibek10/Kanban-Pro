@@ -131,7 +131,8 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
               description: values.description,
               status: task.status as TaskStatusType,
               columnId: statusToColumnMap[task.status as TaskStatusType],
-              priority:values.priority
+              priority: values.priority,
+              targetIndex:null
             })
           );
         }

@@ -124,7 +124,7 @@ export function updateTaskReducer(
     description?: string;
     priority?: TaskPriorityType;
     status?: TaskStatusType;
-    targetIndex?: number;
+    targetIndex?: number | null;
   }>
 ) {
   const project = state.find((p) => p.id === action.payload.projectId);

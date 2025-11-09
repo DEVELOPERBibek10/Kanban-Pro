@@ -49,7 +49,7 @@ export const kanbanSlice = createSlice({
     //Task Reducers
     addTask: (state, action: PayloadAction<{ id?:string, projectId: string; title: string; description?: string; priority: TaskPriorityType; columnId:string }>) => addTaskReducer(state, action),
     
-    updateTask: (state, action: PayloadAction<{ projectId: string, targetIndex?:number, columnId: string, id: string, title: string, description?: string, priority?: TaskPriorityType, status?: TaskStatusType, createdAt?: string }>) => updateTaskReducer(state, action),
+    updateTask: (state, action: PayloadAction<{ projectId: string, targetIndex?:number|null, columnId: string, id: string, title: string, description?: string, priority?: TaskPriorityType, status?: TaskStatusType, createdAt?: string }>) => updateTaskReducer(state, action),
     
     deleteTask: (state, action: PayloadAction<{ projectId: string, columnId: string; id:string}>)=> deleteTaskReducer(state,action)
   },
