@@ -67,7 +67,7 @@ const activeId = useSelector((state: RootState) => state.active.id);
           handleOnDrop(e);
         }
       }}
-      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 min-h-[550px] flex flex-col items-center pb-4 px-3"
+      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 min-h-[550px] flex flex-col items-center pb-6 px-3"
     >
       <div className="w-full bg-zinc-200 dark:bg-zinc-700 p-2 mt-2.5 rounded-md flex justify-between items-center">
         {project!.columns[columnId].name}
