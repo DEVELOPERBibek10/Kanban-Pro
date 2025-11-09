@@ -22,7 +22,7 @@ const ActiveProject = () => {
   const states = ["Total", "In Progress", "Waiting", "Completed"];
 
   const OverallTasksStates = (state: string) => {
-    
+    if (!projects) return;
     switch (state) {
       case "Total": {
         const columns = ["todo", "inProgress", "done"];
