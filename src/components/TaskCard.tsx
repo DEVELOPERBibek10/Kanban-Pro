@@ -33,7 +33,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
   };
   return (
     <Card data-task-id={task.id} draggable onDragStart={(e)=> handleDragStart(e)} className="w-[99%] h-[110px] max-h-[120px] flex flex-col justify-center shrink-0 gap-1.5 dark:bg-zinc-800">
-      <CardHeader className="w-full">
+      <CardHeader className="w-full flex items-center justify-between mb-0.5">
         <div
           className={cn(
             `w-fit rounded-3xl px-2 pr-4 gap-0.5 font-medium
