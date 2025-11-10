@@ -32,8 +32,8 @@ const TaskAction = ({ task }: taskActionProps) => {
             onClick={() => setOpen(true)}
             className="flex items-center gap-3 w-full cursor-pointer"
           >
-            <FaRegEdit className="size-5" />
-            <span className="dark:text-gray-200">Edit</span>
+            <FaRegEdit className="size-4" />
+            <span className="dark:text-gray-200 text-xs">Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
@@ -45,10 +45,10 @@ const TaskAction = ({ task }: taskActionProps) => {
                 })
               )
             }
-            className="flex items-center gap-3 w-full cursor-pointer"
+            className="flex items-center gap-2 w-full cursor-pointer"
           >
-            <AiOutlineDelete color="red" className="size-5 " />
-            <span className="text-red-500">Delete</span>
+            <AiOutlineDelete color="red" className="size-4 " />
+            <span className="text-red-500 text-xs">Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -70,16 +70,16 @@ const ProjectsDropdown = ({
               className="w-full border-0 cursor-pointer p-1.5 rounded-lg flex items-center justify-between"
             >
               <div className="w-full rounded-lg flex gap-2 items-center">
-                <div className="bg-primary size-9 flex justify-center items-center rounded-lg">
+                <div className="bg-primary size-7 flex justify-center items-center rounded-lg">
                   <img
                     loading="lazy"
                     src={returnIcons(project.type!).icon}
                     alt={returnIcons(project.type!).name}
-                    className="size-7"
+                    className="size-5"
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-semibold text-[15px] dark:text-gray-200 line-clamp-1">
+                  <span className="font-semibold text-sm dark:text-gray-200 line-clamp-1">
                     {project.name}
                   </span>
                   <span className="text-xs text-zinc-500">

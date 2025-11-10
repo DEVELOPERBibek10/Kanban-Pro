@@ -95,18 +95,18 @@ const ActiveProject = () => {
           >
             <div className="h-16 bg-muted dark:bg-white/10 rounded-lg flex items-center justify-between">
               <div className="flex flex-col items-start px-3 mt-2">
-                <span className="text-gray-400 text-[13px]">PROJECT</span>
-                <span className="dark:text-gray-300 text-lg line-clamp-1">
+                <span className="text-gray-400 text-[12px]">PROJECT</span>
+                <span className="dark:text-gray-300 text-base line-clamp-1">
                   {project ? project.name : "No Projects yet.."}
                 </span>
               </div>
               {project && (
-                <div className="bg-primary size-10 flex justify-center items-center rounded-full mr-3">
+                <div className="bg-primary size-8 flex justify-center items-center rounded-full mr-3">
                   <img
                     loading="lazy"
                     src={returnIcons(project.type!).icon}
                     alt={returnIcons(project.type!).name}
-                    className="size-5"
+                    className="size-4"
                   />
                 </div>
               )}
@@ -123,8 +123,8 @@ const ActiveProject = () => {
           <span className="font-bold text-xl">Tasks</span>
           <div className="grid grid-cols-2 gap-3 mt-3">
             {states.map((state) => (
-              <div key={state} className="p-3 bg-gray-100 dark:bg-zinc-900 rounded-xl">
-                <span className="text-gray-600 dark:text-gray-300 text-[12px]">{ state.toUpperCase() }</span>
+              <div key={state} className="p-2 bg-gray-100 dark:bg-zinc-900 rounded-xl">
+                <span className="text-gray-600 dark:text-gray-300 text-xs">{ state.toUpperCase() }</span>
                 <div className="flex gap-2 mt-1 items-center">
                   <div
                     data-orientation="vertical"
@@ -133,7 +133,7 @@ const ActiveProject = () => {
                     className="w-1 h-4 bg-primary"
                   />
                  
-                  <span className="font-bold text-lg dark:text-gray-200">{ OverallTasksStates(state) ? OverallTasksStates(state) : 0 }</span>
+                  <span className="font-bold text-base dark:text-gray-200">{ OverallTasksStates(state) ? OverallTasksStates(state) : 0 }</span>
                 </div>
               </div>
             ))}

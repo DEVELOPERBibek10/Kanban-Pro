@@ -6,9 +6,9 @@ import { Toaster } from "../ui/sonner";
 const Layout = () => {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <div className="max-w-full min-h-screen">
+      <div className="w-full max-w-full min-h-screen">
         <Header />
-        <div className="min-h-[70vh] w-full flex mt-12">
+        <div className="min-h-[60vh] w-full flex mt-12">
           <Home />
         </div>
         <Toaster closeButton={false} />

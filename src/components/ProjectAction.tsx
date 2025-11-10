@@ -47,21 +47,21 @@ const ProjectAction = () => {
       <Dialog>
         <DialogTrigger>
           <Eye
-            width={26}
+            width={22}
             className="text-muted-foreground mt-1 cursor-pointer"
           />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="w-full border-b-2 border-gray-300 dark:border-zinc-600">
-            <DialogTitle className="text-xl font-bold leading-4">
+            <DialogTitle className="text-lg font-bold leading-4">
               All Projects
             </DialogTitle>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs">
               List of all available projects
             </p>
             <div className="w-full flex justify-between gap-3 items-center mt-2 mb-4">
               <Input
-                className="focus-visible:ring-0 outline-0 border-0 shadow-sm focus-visible:ring-offset-1 focus-visible:ring-offset-primary"
+                className="focus-visible:ring-0 outline-0 border-0 text-sm shadow-sm focus-visible:ring-offset-1 focus-visible:ring-offset-primary"
                 placeholder="Search a Project..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -72,7 +72,7 @@ const ProjectAction = () => {
                   setOpen(!open);
                   setProjectDetail(null);
                 }}
-                className="bg-secondary hover:bg-secondary text-zinc-800 dark:text-gray-200 cursor-pointer"
+                className="bg-secondary hover:bg-secondary text-sm text-zinc-800 dark:text-gray-200 cursor-pointer"
               >
                 Create Project
               </Button>

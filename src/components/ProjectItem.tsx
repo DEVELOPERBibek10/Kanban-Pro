@@ -53,26 +53,26 @@ const ProjectItem = ({
         className="w-full border-2 border-foreground-muted p-1.5 rounded-lg flex items-center justify-between"
       >
         <div className="w-full rounded-lg flex gap-2 items-center">
-          <div className="bg-primary size-9 flex justify-center items-center rounded-lg">
+          <div className="bg-primary size-8 flex justify-center items-center rounded-lg">
             <img
               loading="lazy"
               src={returnIcons(project.type!).icon}
               alt={returnIcons(project.type!).name}
-              className="size-7"
+              className="size-6"
             />
           </div>
           <div className="flex flex-col">
-            <div className="flex gap-3 items-center">
-              <span className="font-semibold text-[15px] dark:text-gray-200 line-clamp-1">
+            <div className="flex gap-2 items-center">
+              <span className="font-semibold text-[14px] dark:text-gray-200 line-clamp-1">
                 {project.name}
               </span>
               {project.id === active.id && (
-                <span className="bg-gray-200 dark:bg-zinc-700 text-xs p-1 rounded-md font-semibold">
+                <span className="bg-gray-200 dark:bg-zinc-700 text-[10px] p-1 rounded-md font-semibold">
                   Active
                 </span>
               )}
             </div>
-            <span className="text-xs text-zinc-500">
+            <span className="text-[10px] text-zinc-500">
               <span className="mr-0.5">
                 {project.columns.todo.tasks.length +
                   project.columns.inProgress.tasks.length +
@@ -96,14 +96,14 @@ const ProjectItem = ({
               )
             }
           >
-            <MdEdit className="size-5" color="green" />
+            <MdEdit className="size-4" color="green" />
           </Button>
           <Button
             className="bg-red-500/20 hover:bg-red-500/30 rounded-full cursor-pointer transition-all duration-300"
             size={"icon"}
             onClick={() => setAlertOpen(!alertOpen)}
           >
-            <MdDelete className="size-5" color="red" />
+            <MdDelete className="size-4" color="red" />
           </Button>
         </div>
       </li>

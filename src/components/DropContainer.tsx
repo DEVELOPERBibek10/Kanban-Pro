@@ -67,16 +67,16 @@ const activeId = useSelector((state: RootState) => state.active.id);
           handleOnDrop(e);
         }
       }}
-      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 min-h-[550px] flex flex-col items-center pb-6 px-3"
+      className="border-2 rounded-lg dark:border-zinc-700 border-zinc-200 xl:min-h-[500px] flex flex-col items-center px-3"
     >
-      <div className="w-full bg-zinc-200 dark:bg-zinc-700 p-2 mt-2.5 rounded-md flex justify-between items-center">
+      <div className="w-full bg-zinc-200 text-sm dark:bg-zinc-700 p-2 mt-2.5 rounded-md flex justify-between items-center">
         {project!.columns[columnId].name}
-        <div className="w-8 h-8 rounded-full bg-primary text-gray-200 flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-primary text-gray-200 flex items-center justify-center">
           {project!.columns[columnId].tasks.length}
         </div>
       </div>
       {project?.columns[columnId].tasks.length !== 0 ? (
-        <div className="flex flex-col justify-center items-center w-full pt-4 gap-4">
+        <div className="flex flex-col justify-center items-center w-full pt-4 pb-4 gap-4">
           {
           project?.columns[columnId].tasks.map((task) => (
               <TaskCard key={task.id} task={task} />
@@ -85,10 +85,10 @@ const activeId = useSelector((state: RootState) => state.active.id);
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-3 h-1/2">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full dark:bg-zinc-400 bg-zinc-300">
-            <ClipboardX className="size-5" />
+          <div className="w-8 h-8 flex items-center justify-center rounded-full dark:bg-zinc-400 bg-zinc-300">
+            <ClipboardX className="size-4" />
           </div>
-          <span className="text-center text-[15px] text-slate-500">
+          <span className="text-center text-sm text-slate-500">
             No Tasks currently. Board is empty!
           </span>
         </div>

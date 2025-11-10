@@ -17,14 +17,14 @@ const Header = () => {
         <div className="flex justify-center items-center gap-2">
           <Logo />
           <div>
-            <span className="text-xl font-bold mr-1"> Pro</span>
-            <span className="text-xl">KanBan</span>
+            <span className="text-lg font-bold mr-1"> Pro</span>
+            <span className="text-lg">KanBan</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
           <Separator className="h-[25px] w-[3px] bg-zinc-700 dark:bg-gray-300 rounded-full" />
-          <Button className="rounded-full cursor-pointer text-base" onClick={()=> setOpen(!open)}>
+          <Button className="rounded-full cursor-pointer text-sm" onClick={()=> setOpen(!open)}>
             Create Project
           </Button>
         </div>

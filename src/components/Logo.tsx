@@ -1,6 +1,6 @@
 const Logo = () => {
   return (
-    <div className="bg-primary size-10 text-lg text-white rounded-xl flex justify-center items-center">
+    <div className="bg-primary size-9 text-lg text-white rounded-xl flex justify-center items-center">
       <svg
         stroke="currentColor"
         fill="currentColor"
