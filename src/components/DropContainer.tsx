@@ -6,17 +6,19 @@ import { ClipboardX } from "lucide-react";
 import type { TaskPriorityType, TaskStatusType } from "@/types";
 import { updateTask } from "@/lib/Slice/kanbanSlice";
 import { columnToStatusMap, statusToColumnMap } from "@/constants";
+import { toast } from "sonner";
 
-
-const DropContainer = ({columnId}:{columnId:string}) => {
-const activeId = useSelector((state: RootState) => state.active.id);
+const DropContainer = ({ columnId }: { columnId: string }) => {
+  const activeId = useSelector((state: RootState) => state.active.id);
   const project = useSelector(selectProjectById(activeId!));
   const dispatch = useDispatch();
   const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
     // 1. Get the container where the task is dropped.
     const dropContainer = e.currentTarget;
     //2. Get all the tasks that are in the dropContainer.
-    const taskCards = Array.from(dropContainer.querySelectorAll("[data-task-id]"));
+    const taskCards = Array.from(
+      dropContainer.querySelectorAll("[data-task-id]")
+    );
     try {
       // 3. Get the draggedTask.
       const draggedTask = JSON.parse(e.dataTransfer.getData("Task"));
@@ -56,8 +58,9 @@ const activeId = useSelector((state: RootState) => state.active.id);
         })
       );
     } catch (error) {
-         console.error("Error processing drop:", error);
-       }
+      console.error("Error processing drop:", error);
+      toast.error("Error processing drop");
+    }
   };
   return (
     <div
@@ -77,11 +80,9 @@ const activeId = useSelector((state: RootState) => state.active.id);
       </div>
       {project?.columns[columnId].tasks.length !== 0 ? (
         <div className="flex flex-col justify-center items-center w-full pt-4 pb-4 gap-4">
-          {
-          project?.columns[columnId].tasks.map((task) => (
-              <TaskCard key={task.id} task={task} />
-          ))
-          }
+          {project?.columns[columnId].tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-3 h-1/2">
