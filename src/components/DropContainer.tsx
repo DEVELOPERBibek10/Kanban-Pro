@@ -65,8 +65,7 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
     }
   };
   return (
-    <motion.div
-      layout
+    <div
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         if (project) {
@@ -87,6 +86,7 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
             {project?.columns[columnId].tasks.map((task, index) => (
               <motion.div
                 key={task.id}
+                layout
                 className="w-full"
                 initial={{ opacity: 0, scale: 0.8, y: -20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -113,7 +113,7 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
           </span>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 

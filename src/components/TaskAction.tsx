@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "@/lib/Slice/kanbanSlice";
 import { statusToColumnMap } from "@/constants";
+import { toast } from "sonner";
 
 interface taskActionProps {
   task: Task;
@@ -36,7 +37,7 @@ const TaskAction = ({ task }: taskActionProps) => {
             <span className="dark:text-gray-200 text-xs">Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
+            onClick={() => {
               dispatch(
                 deleteTask({
                   projectId: task.projectId,
@@ -44,6 +45,8 @@ const TaskAction = ({ task }: taskActionProps) => {
                   columnId: statusToColumnMap[task.status as TaskStatusType],
                 })
               )
+              toast.success("Task Deleted Sucessfully!")
+            }
             }
             className="flex items-center gap-2 w-full cursor-pointer"
           >

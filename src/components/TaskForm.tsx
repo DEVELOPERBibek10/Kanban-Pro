@@ -103,6 +103,7 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
       } else {
         if (!task && state === "Create") {
           dispatch(addTask({ projectId: values.projectId, title: values.title, priority: values.priority, description: values.description, columnId: "todo" }))
+          toast.success("Task Created Sucessfully!");
         }
         else if (task && state === "Update" && values.projectId !== activeId) {
           dispatch(
@@ -122,6 +123,7 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
               id:task.id
             })
           );
+          toast.success("Task Updated Sucessfully!")
         } else if (task && state === "Update" && values.projectId === activeId) {
           dispatch(
             updateTask({
@@ -135,6 +137,7 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
               targetIndex:null
             })
           );
+          toast.success("Task Updated Sucessfully!");
         }
       }
       setOpen(!open);
@@ -147,7 +150,7 @@ function TaskForm({ open, setOpen, state,task }: TaskFormProps) {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="min-w-2xl max-w-2xl">
+        <DialogContent className="min-w-[300px] max-w-[400px] md:min-w-2xl md:max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               <div className="flex flex-col justify-center gap-3">

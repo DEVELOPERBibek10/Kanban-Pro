@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteProject } from "@/lib/Slice/kanbanSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 interface DeleteProjectAlertProps {
   projectId: string;
@@ -35,7 +36,10 @@ const DeleteProjectAlert = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction
-            onClick={() => dispatch(deleteProject({ id: projectId }))}
+            onClick={() => {
+              dispatch(deleteProject({ id: projectId }));
+              toast.success("Project Deleted Sucessfully!");
+            }}
             className="bg-red-500 hover:bg-red-600 cursor-pointer"
           >
             Delete

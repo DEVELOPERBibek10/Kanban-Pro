@@ -94,6 +94,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
             type: values.type,
           })
         );
+        toast.success("Project added Sucessfully!");
       } else if (status === "Update") {
         dispatch(
           updateProject({
@@ -105,6 +106,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
         );
       }
       form.reset();
+      toast.success("Project Updated Sucessfully!");
       setOpen(!open);
     } else {
       return toast.error("Project already exists!!");
@@ -114,7 +116,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-full flex">
+        <DialogContent className="min-w-[300px] max-w-[400px] flex md:min-w-[490px] md:max-w-[490px]">
           <DialogHeader className="max-w-full shrink-0">
             <DialogTitle>
               <div className="flex flex-col justify-center gap-3">
@@ -186,7 +188,7 @@ const ProjectForm = ({ open, setOpen, status, detail }: ProjectFormProps) => {
                       <FormItem>
                         <FormLabel>Description</FormLabel>
                         <FormControl>
-                          <Textarea className="w-[450px]" {...field} />
+                          <Textarea className="min-w-[360px] md:min-w-[450px]" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
