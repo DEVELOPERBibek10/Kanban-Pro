@@ -7,6 +7,8 @@ import type { TaskPriorityType, TaskStatusType } from "@/types";
 import { updateTask } from "@/lib/Slice/kanbanSlice";
 import { columnToStatusMap, statusToColumnMap } from "@/constants";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const DropContainer = ({ columnId }: { columnId: string }) => {
   const activeId = useSelector((state: RootState) => state.active.id);
@@ -63,7 +65,8 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
     }
   };
   return (
-    <div
+    <motion.div
+      layout
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         if (project) {
@@ -80,9 +83,25 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
       </div>
       {project?.columns[columnId].tasks.length !== 0 ? (
         <div className="flex flex-col justify-center items-center w-full pt-4 pb-4 gap-4">
-          {project?.columns[columnId].tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {project?.columns[columnId].tasks.map((task, index) => (
+              <motion.div
+                key={task.id}
+                className="w-full"
+                initial={{ opacity: 0, scale: 0.8, y: -20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 40,
+                  delay: index * 0.05, // Stagger animation
+                }}
+              >
+                <TaskCard task={task} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-3 h-1/2">
@@ -94,7 +113,7 @@ const DropContainer = ({ columnId }: { columnId: string }) => {
           </span>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
